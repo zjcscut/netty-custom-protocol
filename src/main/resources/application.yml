@@ -1,0 +1,3 @@
+server:
+  display-name: netty
+  port: 9090

@@ -25,4 +25,12 @@ public class NettyMessage {
 	public void setBody(Object body) {
 		this.body = body;
 	}
+
+	@Override
+	public String toString() {
+		return "NettyMessage{" +
+				"nettyHeader=" + nettyHeader +
+				", body=" + body +
+				'}';
+	}
 }

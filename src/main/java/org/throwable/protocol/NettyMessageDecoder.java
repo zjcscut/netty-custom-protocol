@@ -32,28 +32,28 @@ public final class NettyMessageDecoder extends LengthFieldBasedFrameDecoder {
 		}
 		NettyMessage nettyMessage = new NettyMessage();
 		NettyHeader nettyHeader = new NettyHeader();
-		nettyHeader.setCrcCode(in.readInt());
-		nettyHeader.setLength(in.readInt());
-		nettyHeader.setSessionID(in.readLong());
-		nettyHeader.setType(in.readByte());
-		nettyHeader.setPriority(in.readByte());
-		int size = in.readInt();
+		nettyHeader.setCrcCode(frame.readInt());
+		nettyHeader.setLength(frame.readInt());
+		nettyHeader.setSessionID(frame.readLong());
+		nettyHeader.setType(frame.readByte());
+		nettyHeader.setPriority(frame.readByte());
+		int size = frame.readInt();
 		if (size > 0) {
 			Map<String, Object> attch = new HashMap<>(size);
 			int keySize;
 			byte[] keyArray;
 			String key;
 			for (int i = 0; i < size; i++) {
-				keySize = in.readInt();
+				keySize = frame.readInt();
 				keyArray = new byte[keySize];
-				in.readBytes(keyArray);
+				frame.readBytes(keyArray);
 				key = new String(keyArray, "UTF-8");
-				attch.put(key, marshallingDecoderAdapter.decode(ctx, in));
+				attch.put(key, marshallingDecoderAdapter.decode(ctx, frame));
 			}
 			nettyHeader.setAttachment(attch);
 		}
-		if (in.readableBytes() > 0) {
-			nettyMessage.setBody(marshallingDecoderAdapter.decode(ctx, in));
+		if (frame.readableBytes() > 0) {
+			nettyMessage.setBody(marshallingDecoderAdapter.decode(ctx, frame));
 		}
 		nettyMessage.setNettyHeader(nettyHeader);
 		return nettyMessage;

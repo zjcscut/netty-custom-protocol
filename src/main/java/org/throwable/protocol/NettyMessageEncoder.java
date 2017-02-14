@@ -40,7 +40,8 @@ public final class NettyMessageEncoder extends MessageToMessageEncoder<NettyMess
 		Object value;
 		for (Map.Entry<String, Object> entry : nettyMessage.getNettyHeader().getAttachment().entrySet()) {
 			key = entry.getKey();
-			keyArray = key.getBytes();
+			keyArray = key.getBytes("UTF-8");
+			sendBuf.writeInt(keyArray.length);
 			sendBuf.writeBytes(keyArray);
 			value = entry.getValue();
 			marshallingEncoderAdapter.encode(channelHandlerContext, value, sendBuf);
@@ -48,10 +49,9 @@ public final class NettyMessageEncoder extends MessageToMessageEncoder<NettyMess
 
 		if (null != nettyMessage.getBody()) {
 			marshallingEncoderAdapter.encode(channelHandlerContext, nettyMessage.getBody(), sendBuf);
-		} else {
-			sendBuf.writeInt(0);
-			sendBuf.setInt(4, sendBuf.readableBytes());
 		}
-
+		// 之前写了crcCode 4bytes，除去crcCode和length 8bytes即为更新之后的字节
+		sendBuf.setInt(4, sendBuf.readableBytes());
+		list.add(sendBuf);
 	}
 }

@@ -64,4 +64,16 @@ public class NettyHeader {
 	public void setAttachment(Map<String, Object> attachment) {
 		this.attachment = attachment;
 	}
+
+	@Override
+	public String toString() {
+		return "NettyHeader{" +
+				"crcCode=" + crcCode +
+				", length=" + length +
+				", sessionID=" + sessionID +
+				", type=" + type +
+				", priority=" + priority +
+				", attachment=" + attachment +
+				'}';
+	}
 }
