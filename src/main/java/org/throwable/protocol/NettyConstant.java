@@ -8,7 +8,7 @@ package org.throwable.protocol;
 public interface NettyConstant {
 
 	String REMOTE_HOST = "127.0.0.1";
-	int REMOTE_PORT = 9098;
+	int REMOTE_PORT = 9091;
 	String CLIENT_HOST = "127.0.0.1";
-	int CLIENT_PORT = 9099;
+	int CLIENT_PORT = 9092;
 }
